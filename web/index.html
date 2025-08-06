@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intune Wrapper</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+</head>
+<body>
+    <div class="wrapper-container">
+        <!-- Header -->
+        <div class="header" data-tauri-drag-region="true">
+            <div class="header-left">
+                <i data-lucide="layers" class="icon"></i>
+                <h1 class="header-title">Intune Wrapper</h1>
+            </div>
+            <div class="header-right">
+                <button class="theme-toggle" id="themeToggle" title="Toggle theme">
+                    <i data-lucide="sun" class="icon theme-icon sun-icon"></i>
+                    <i data-lucide="moon" class="icon theme-icon moon-icon"></i>
+                </button>
+                <div class="window-controls">
+                    <button class="window-btn" id="close-btn">
+                        <i data-lucide="x" class="icon icon-sm"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Mode Selection -->
+            <div class="section">
+                <h2 class="section-title">Select the required Mode</h2>
+                <div class="mode-selection">
+                    <label class="radio-group">
+                        <input type="radio" name="mode" value="bulk" class="radio-input">
+                        <span class="radio-label">
+                            <i data-lucide="users" class="icon icon-sm"></i>
+                            Bulk
+                        </span>
+                    </label>
+                    <label class="radio-group">
+                        <input type="radio" name="mode" value="single" class="radio-input" checked>
+                        <span class="radio-label">
+                            <i data-lucide="user" class="icon icon-sm"></i>
+                            Single
+                        </span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Package Type Selection -->
+            <div class="section">
+                <h2 class="section-title">Select the required Package Type</h2>
+                <div class="package-grid">
+                    <div class="package-option selected" data-type="exe">
+                        <div class="package-radio"></div>
+                        <i data-lucide="package" class="package-icon"></i>
+                        <span class="package-label">EXE</span>
+                    </div>
+
+                    <div class="package-option" data-type="msi">
+                        <div class="package-radio"></div>
+                        <i data-lucide="box" class="package-icon"></i>
+                        <span class="package-label">MSI</span>
+                    </div>
+
+                    <div class="package-option" data-type="psadt">
+                        <div class="package-radio"></div>
+                        <i data-lucide="file-text" class="package-icon"></i>
+                        <span class="package-label">PSADT</span>
+                    </div>
+
+                    <div class="package-option" data-type="vbs">
+                        <div class="package-radio"></div>
+                        <i data-lucide="code" class="package-icon"></i>
+                        <span class="package-label">VBS</span>
+                    </div>
+
+                    <div class="package-option" data-type="batch">
+                        <div class="package-radio"></div>
+                        <i data-lucide="terminal" class="package-icon"></i>
+                        <span class="package-label">BATCH</span>
+                    </div>
+
+                    <div class="package-option" data-type="ps1">
+                        <div class="package-radio"></div>
+                        <i data-lucide="code-2" class="package-icon"></i>
+                        <span class="package-label">PS1</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- File Selection -->
+            <div class="section">
+                <h2 class="section-title" id="selection-title">File Selection & Information</h2>
+                <div class="file-section">
+                    <div class="single-file-selection">
+                        <div class="upload-header">
+                            <i data-lucide="upload" class="icon"></i>
+                            <span class="upload-title">Select EXE file</span>
+                        </div>
+
+                        <!-- File Input -->
+                        <input type="file" class="file-input" accept=".exe,.msi,.ps1,.vbs,.bat" id="fileInput">
+
+                        <div class="file-info" id="single-info-grid">
+                            <div class="info-item">
+                                <div class="info-label">
+                                    <i data-lucide="file-text" class="icon icon-sm"></i>
+                                    Selected File
+                                </div>
+                                <div class="info-value" id="selectedFileName">None selected</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">
+                                    <i data-lucide="check-circle" class="icon icon-sm"></i>
+                                    Status
+                                </div>
+                                <div class="info-value" id="statusValue">Ready</div>
+                            </div>
+                        </div>
+
+                        <div class="info-message">
+                            <strong>Single Mode:</strong> The selected file will be packaged for deployment.
+                        </div>
+                    </div>
+
+                    <div class="folder-selection" style="display: none;">
+                        <div class="file-info">
+                            <div class="file-info" id="bulk-info-grid">
+                            <div class="info-item">
+                                <div class="info-label">
+                                    <i data-lucide="folder-open" class="icon icon-sm"></i>
+                                    Selected Folder
+                                </div>
+                                <div class="info-value" id="selectedFolderName">C:\Temp\IntuneWrapper\Input</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">
+                                    <i data-lucide="check-circle" class="icon icon-sm"></i>
+                                    Status
+                                </div>
+                                <div class="info-value" id="statusValueBulk">Ready</div>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="info-message">
+                            <strong>Bulk Mode:</strong> The selected folder will be packaged for deployment.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Create Package Button -->
+            <div class="button-container">
+                <button class="create-btn" id="createBtn" disabled>Create Package</button>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>Built with ❤️ by Vedant, Vishnu and Shikhar Malhotra</p>
+        </div>
+    </div>
+
+    <script src="script.js" type="module"></script>
+    <script>
+        // Initialize Lucide icons after the page loads
+        lucide.createIcons();
+    </script>
+</body>
+</html>

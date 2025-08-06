@@ -1,0 +1,15 @@
+{
+  "name": "simple-intune-gui",
+  "version": "1.0.0",
+  "description": "A simple Intune GUI built with Tauri.",
+  "scripts": {
+    "build": "echo No build step needed for web assets",
+    "tauri": "tauri"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@tauri-apps/api": "^2.7.0"
+  }
+}
